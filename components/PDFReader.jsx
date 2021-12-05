@@ -22,21 +22,40 @@ export default function PDFReader({outSideNumber}) {
     return (
         <div className='flex justify-center h-screen pb-40 w-full flex-col items-center p-10 bg-gray-200'>
         <Loader isLoading={isLoading} />
-        <ControlPanel hasOutsideNumber={outSideNumber} setAnimating={setAnimating} setScale={setScale} numPages={numPages} pageNumber={pageNumber} setPageNumber={setPageNumber} />
+
+        <ControlPanel 
+          hasOutsideNumber={outSideNumber} 
+          setAnimating={setAnimating} 
+          setScale={setScale} 
+          numPages={numPages} 
+          pageNumber={pageNumber} 
+          setPageNumber={setPageNumber} 
+        />
+        
         <Document
           file="/assets/21EbMyEquibrand.pdf"
           onLoadSuccess={onDocumentLoadSuccess}
           renderMode='svg'
         >
-        <div className='flex'>
-          <Page className={`${animating ? 'animate-pulse' : 'animate-none' }`} renderTextLayer={false} renderMode='svg' pageNumber={pageNumber} scale={scale} />
+          <div className='flex'>
+            <Page 
+              className={`${animating ? 'animate-pulse' : 'animate-none' }`} 
+              renderTextLayer={false} renderMode='svg' 
+              pageNumber={pageNumber} 
+              scale={scale} 
+            />
+            
+            {
+                pageNumber - 1 > 0 && pageNumber + 1 < numPages  
+                ? <Page 
+                  className={`${animating ? 'animate-pulse' : 'animate-none' }`} 
+                  renderTextLayer={false} renderMode='svg' pageNumber={pageNumber + 1} 
+                  scale={scale} /> 
+                : <></>
+            }
+            
           
-          {
-              pageNumber - 1 > 0 && pageNumber + 1 < numPages  ? <Page className={`${animating ? 'animate-pulse' : 'animate-none' }`} renderTextLayer={false} renderMode='svg' pageNumber={pageNumber + 1} scale={scale} /> : <></>
-          }
-          
-        
-        </div>
+          </div>
         </Document>
         
       </div>
