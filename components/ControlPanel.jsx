@@ -1,9 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faFastBackward, faFastForward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 export default function ControlPanel(props) {
-    const {pageNumber, numPages, setPageNumber, setAnimating, setScale} = props;
+    const {hasOutsideNumber, pageNumber, numPages, setPageNumber, setAnimating, setScale} = props;
 
     const isFirstPage = pageNumber === 1;
     const isLastPage = pageNumber === numPages;
@@ -11,11 +11,27 @@ export default function ControlPanel(props) {
     const firstPageClass = isFirstPage ? 'disabled cursor-not-allowed' : 'clickable cursor-pointer';
     const lastPageClass = isLastPage ? 'disabled cursor-not-allowed' : 'clickable cursor-pointer';
 
+
+    useEffect(() => {
+        if(Number(hasOutsideNumber) > 0){
+            setPageNumber(Number(hasOutsideNumber));
+        }
+    }, [hasOutsideNumber])
+
     function animatePage(n){
         setAnimating(true);
 
         setTimeout(() => {
-            setPageNumber(n);
+            if(!hasOutsideNumber){
+                setPageNumber(n);
+            }else{
+                if(Number(hasOutsideNumber) > 0){
+                    setPageNumber(n);
+                }else{
+                    setPageNumber(n);
+                }
+            }
+
             setAnimating(false);  
         }, 300);
     }
